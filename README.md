@@ -2,10 +2,11 @@
 
 You can play any API server that is compatible with OpenAI API
 
+Try it on streamlit cloud: [https://openai-api-playground.streamlit.app/](https://openai-api-playground.streamlit.app/)
+
 ![91bf86c9b3830da22b9a396f7614edd](https://github.com/hanckjt/openai_api_playground/assets/16874002/0090d833-2e87-4d24-8e00-589d78954a60)
 ![a20236222dca67f84e9a610091912de](https://github.com/hanckjt/openai_api_playground/assets/16874002/7e3d8ea5-8e5b-471a-bbd5-997829d41c4e)
 ![bc273669795010b976d3cb9d7a94505](https://github.com/hanckjt/openai_api_playground/assets/16874002/063bc804-d0ab-4ecf-ad91-a02eb49bd735)
-
 
 ## Feature List:
 
@@ -19,7 +20,6 @@ You can play any API server that is compatible with OpenAI API
 - [ ] Support multimodal model, including images, audio or video
 - [ ] Conduct Q&A interactions using uploaded text files as a knowledge base
 - [ ] Support for online content search for reference
-
 
 ## Usage Instructions:
 
