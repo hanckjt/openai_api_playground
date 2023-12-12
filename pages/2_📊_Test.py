@@ -37,7 +37,7 @@ def main():
             cols[2].write(f'Latency: {latency:.2f} ms')
 
     with st.container(border=True):
-        st.write('Tokens Generate Speed: Temperature=0.0')
+        st.write('Tokens Generate Speed:')
         cols = st.columns(2)
         prompt = cols[0].text_input('Prompt', 'Tell me a short joke.')
         concurrency = cols[1].number_input('Concurrency', 1, 100, 1)
