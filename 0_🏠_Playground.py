@@ -42,28 +42,38 @@ def settings_page():
             set_session_state('inited', True)
 
     models_df = get_models_df()
-    if models_df is not None:
-        with st.form(key='model_settings_form'):
-            models = models_df['id'].tolist()
-            model_index = models.index(get_app_setting('model', models[0]))
-            model = st.selectbox('Select Models', models, key='select_model', index=model_index)
-            max_tokens = st.number_input('Max Tokens', 1, 200000, get_app_setting('max_tokens', 512), key='max_tokens')
-            temperature = st.slider('Temperature', 0.0, 1.0, get_app_setting('temperature', 0.7), key='temperature')
-            top_p = st.slider('Top P', 0.0, 1.0, get_app_setting('top_p', 1.0), key='top_p')
-            timeout = st.slider('Time Out', 1, 60, get_app_setting('timeout', 10), key='timeout')
-            system_prompt = st.text_input('System Prompt', get_app_setting('system_prompt', 'You are a hellpful assistant.'), key='system_prompt')
-            stream = st.checkbox('Stream', get_app_setting('stream', True), key='stream')
-            if st.form_submit_button('Confirm'):
-                set_app_setting('model', model)
-                set_app_setting('max_tokens', max_tokens)
-                set_app_setting('temperature', temperature)
-                set_app_setting('top_p', top_p)
-                set_app_setting('timeout', timeout)
-                set_app_setting('stream', stream)
-                set_app_setting('system_prompt', system_prompt)
+    if models_df is None:
+        with st.container(border=True):
+            st.text('Get models from OpenAI API failed, you can set the model name manually.')
+            model_name = st.text_input('Model Name', get_app_setting('model', 'gpt-3.5-turbo'), key='model_name')
+            models_df = pd.DataFrame([{'id': model_name, 'created': pd.to_datetime('now'), 'object': 'model'}])
 
-                reset_chat_history()
-                st.toast('Model Settings Updated')
+    with st.form(key='model_settings_form'):
+        models = models_df['id'].tolist()
+        model = get_app_setting('model', models[0])
+        if model in models:
+            model_index = models.index(get_app_setting('model', models[0]))
+            model_selected = st.selectbox('Select Models', models, key='select_model', index=model_index)
+        else:
+            model_selected = model
+        model = st.text_input('Model (you can change name manually if it is not in the models list)', model_selected, key='model')
+        max_tokens = st.number_input('Max Tokens', 1, 200000, get_app_setting('max_tokens', 512), key='max_tokens')
+        temperature = st.slider('Temperature', 0.0, 1.0, get_app_setting('temperature', 0.7), key='temperature')
+        top_p = st.slider('Top P', 0.0, 1.0, get_app_setting('top_p', 1.0), key='top_p')
+        timeout = st.slider('Time Out', 1, 60, get_app_setting('timeout', 10), key='timeout')
+        system_prompt = st.text_input('System Prompt', get_app_setting('system_prompt', 'You are a hellpful assistant.'), key='system_prompt')
+        stream = st.checkbox('Stream', get_app_setting('stream', True), key='stream')
+        if st.form_submit_button('Confirm'):
+            set_app_setting('model', model)
+            set_app_setting('max_tokens', max_tokens)
+            set_app_setting('temperature', temperature)
+            set_app_setting('top_p', top_p)
+            set_app_setting('timeout', timeout)
+            set_app_setting('stream', stream)
+            set_app_setting('system_prompt', system_prompt)
+
+            reset_chat_history()
+            st.toast('Model Settings Updated')
 
 
 def main():
