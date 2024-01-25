@@ -5,6 +5,8 @@ from comm_lib import *
 
 @st.cache_data
 def get_models_df():
+    if get_app_setting('api_key', 'YOUR_API_KEY') == 'YOUR_API_KEY':
+        return None
     try:
         models = get_openai_client().models.list().model_dump()['data']
     except Exception as e:
@@ -40,6 +42,9 @@ def settings_page():
             get_models_df.clear()
             reset_chat_history()
             set_session_state('inited', True)
+
+    if get_app_setting('api_key', 'YOUR_API_KEY') == 'YOUR_API_KEY':
+        return
 
     models_df = get_models_df()
     if models_df is None:
