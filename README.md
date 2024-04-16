@@ -34,13 +34,7 @@ Try it on streamlit cloud: [https://openai-api-playground.streamlit.app/](https:
    cd openai_api_playground
 ```
 
-### 2. Install the requirements:
-
-```bash
-   pip install -r requirements.txt
-```
-
-### 3. Run the Script:
+### 2. Run the Script:
 
    Linux:
 
