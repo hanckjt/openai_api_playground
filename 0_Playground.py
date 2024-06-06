@@ -8,17 +8,17 @@ def get_models_df():
     if get_app_setting('api_key', 'YOUR_API_KEY') == 'YOUR_API_KEY':
         return None
     try:
-        models = get_openai_client().models.list().model_dump()['data']
+        models = get_openai_client().models.list().to_dict()['data']
     except Exception as e:
         st.error(e)
         return None
     df = pd.DataFrame(models)
+    if 'created' in df.columns:
+        df['created'] = pd.to_datetime(df['created'], unit='s')
     if 'permission' in df.columns:
-        permission_df = df['permission'].apply(lambda x: x[0]).apply(pd.Series)
-        permission_df.drop(columns=['id', 'object', 'created'], inplace=True)
-        df = pd.concat([df, permission_df], axis=1)
-        df.drop(columns=['permission'], inplace=True)
-    df['created'] = pd.to_datetime(df['created'], unit='s')
+        permission_df = df['permission'].apply(lambda x: x[0] if x else []).apply(pd.Series)
+        permission_df.drop(columns=['id', 'created', 'object'], inplace=True)
+        df = df.drop(columns=['permission']).join(permission_df)
     return df
 
 
